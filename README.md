@@ -2,7 +2,7 @@
 
 Python-based algorithmic trading system for markets with MACD-base strategy execution, MySQL data persistence, comprehensive error handling, and leveraged position management.
 
-## 📊 System Architecture
+## System Architecture
 
 The bot operates in a continuous loop executing the following workflow:
 1. **Data Collection** - Fetches real-time candlestick data from Coinbase API
@@ -76,4 +76,5 @@ Built as a portfolio project demonstrating expertise in:
 - Financial technology (FinTech) applications
 
 ---
+
 
