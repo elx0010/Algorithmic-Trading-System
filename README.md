@@ -1,17 +1,16 @@
-# Automated Crypto Trading Bot
+# Algorithmic Trading System
 
-Python-based algorithmic trading system for cryptocurrency markets with MACD-based strategy execution, MySQL data persistence, comprehensive error handling, and leveraged position management.
+Python-based algorithmic trading system for markets with MACD-base strategy execution, MySQL data persistence, comprehensive error handling, and leveraged position management.
 
-## 🚀 Features
+## 📊 System Architecture
 
-### Trading Strategy
-- **MACD Technical Indicator** - Uses 12/26/9 MACD configuration on 4-hour candles
-- **Multiple Exit Strategies**
-  - Take Profit: 3% gain target
-  - Momentum Loss Detection: Sells when MACD decreases by 2.5+ units
-  - Bearish Crossover: Automatic exit on MACD/Signal line cross
-- **Leveraged Trading** - 3x leverage for amplified returns
-- **Smart Entry Logic** - Buys when MACD increases by 10+ units with upward momentum
+The bot operates in a continuous loop executing the following workflow:
+1. **Data Collection** - Fetches real-time candlestick data from Coinbase API
+2. **Technical Analysis** - Calculates MACD, EMA, and signal line indicators using Pandas
+3. **Signal Detection** - Evaluates entry/exit conditions based on momentum and crossovers
+4. **Order Execution** - Submits market orders via authenticated API requests
+5. **Database Logging** - Persists all market data, trades, and account states
+6. **Status Reporting** - Outputs real-time position and performance metrics
 
 ### Robust Error Handling
 - **Fault-Tolerant API Integration** - Try/except blocks for all network requests
@@ -33,7 +32,7 @@ Python-based algorithmic trading system for cryptocurrency markets with MACD-bas
 - **API Key Rotation Support** - Easy credential updates via environment config
 - **No Hardcoded Secrets** - Production-ready security implementation
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Language**: Python 3.x
 - **Exchange API**: Coinbase Advanced Trade API
@@ -46,114 +45,7 @@ Python-based algorithmic trading system for cryptocurrency markets with MACD-bas
   - `python-dotenv` - Environment management
   - `coinbase` - JWT token generation
 
-## 📋 Prerequisites
-
-- Python 3.8 or higher
-- MySQL Server 8.0+
-- Coinbase Advanced Trade account with API credentials
-- Active internet connection for real-time trading
-
-## ⚙️ Installation
-
-1. **Clone the repository**
-```bash
-git clone <your-repo-url>
-cd Trading
-```
-
-2. **Install dependencies**
-```bash
-pip install mysql-connector-python pandas numpy requests python-dotenv coinbase
-```
-
-3. **Set up MySQL database**
-```sql
-CREATE DATABASE trader;
-
-USE trader;
-
-CREATE TABLE market_data (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    MACD_Value FLOAT,
-    Signal_Value FLOAT,
-    ETH_Price FLOAT,
-    MACD_Trend VARCHAR(10),
-    Signal_Trend VARCHAR(10),
-    Position VARCHAR(50),
-    Time DATETIME
-);
-
-CREATE TABLE trades (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    Trade_Type VARCHAR(10),
-    Time DATETIME,
-    Price FLOAT,
-    ETH_Quantity FLOAT,
-    MACD_Value FLOAT,
-    Signal_Value FLOAT,
-    Reason VARCHAR(50),
-    Order_ID VARCHAR(100),
-    Order_Status VARCHAR(20)
-);
-
-CREATE TABLE account_balance (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    ETH_Balance FLOAT,
-    USD_Balance FLOAT,
-    Time DATETIME
-);
-
-CREATE TABLE positions (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    Entry_Time DATETIME,
-    Entry_Price FLOAT,
-    Exit_Time DATETIME,
-    Exit_Price FLOAT,
-    Take_Profit FLOAT,
-    ETH_Quantity FLOAT,
-    Profit_Loss_USD FLOAT,
-    Profit_Loss_Percent FLOAT
-);
-```
-
-4. **Configure environment variables**
-
-Create a `.env` file in the project directory:
-```env
-DB_Password=your_mysql_password
-host=localhost
-API_KEY=your_coinbase_api_key
-API_SECRET=your_coinbase_api_secret
-```
-
-## 🚀 Usage
-
-**Start the trading bot:**
-```bash
-python "Trader 3.0.py"
-```
-
-The bot will:
-1. Connect to Coinbase API and MySQL database
-2. Fetch 4-hour ETH-USD candlestick data
-3. Calculate MACD indicators in real-time
-4. Execute trades based on strategy signals
-5. Log all activity to the database
-6. Print status updates every 15 seconds
-
-## 📊 Trading Logic
-
-### Buy Conditions
-- MACD increases by **≥10 units** between candles
-- MACD has upward momentum
-- No existing ETH position
-
-### Sell Conditions
-1. **Take Profit**: Price reaches 3% above buy price
-2. **Momentum Loss**: MACD decreases by ≤2.5 units while above signal
-3. **Bearish Crossover**: MACD crosses below signal line with downward momentum
-
-## 📈 Monitoring
+## Monitoring
 
 The bot prints real-time status including:
 - Current ETH price
@@ -163,45 +55,8 @@ The bot prints real-time status including:
 - Account balances (USD & ETH)
 - Potential profit/loss on open positions
 
-## ⚠️ Risk Disclaimer
 
-**This bot trades with real money using 3x leverage.**
-
-- Cryptocurrency trading involves substantial risk of loss
-- Past performance does not guarantee future results
-- Only trade with capital you can afford to lose
-- The author is not responsible for any financial losses
-- Test thoroughly in sandbox environment before live trading
-
-## 🔒 Security Notes
-
-- Never commit `.env` file to version control
-- Rotate API keys regularly
-- Use API keys with trading permissions only (not withdrawal)
-- Monitor database access and secure with strong passwords
-- Consider implementing 2FA on exchange account
-
-## 📝 Database Queries
-
-**View recent trades:**
-```sql
-SELECT * FROM trades ORDER BY Time DESC LIMIT 10;
-```
-
-**Calculate total profit/loss:**
-```sql
-SELECT SUM(Profit_Loss_USD) as Total_PnL FROM positions;
-```
-
-**Check win rate:**
-```sql
-SELECT 
-    COUNT(CASE WHEN Profit_Loss_USD > 0 THEN 1 END) * 100.0 / COUNT(*) as Win_Rate_Percent
-FROM positions 
-WHERE Profit_Loss_USD IS NOT NULL;
-```
-
-## 🛣️ Future Enhancements
+## Future Enhancements
 
 - [ ] Multi-timeframe analysis
 - [ ] Additional technical indicators (RSI, Bollinger Bands)
@@ -211,11 +66,7 @@ WHERE Profit_Loss_USD IS NOT NULL;
 - [ ] SMS/Email alerts for trades
 - [ ] Machine learning integration
 
-## 📄 License
-
-This project is provided as-is for educational purposes.
-
-## 👤 Author
+## Author
 
 Built as a portfolio project demonstrating expertise in:
 - Algorithmic trading strategy development
@@ -226,4 +77,3 @@ Built as a portfolio project demonstrating expertise in:
 
 ---
 
-**⚡ Live Trading Status**: This bot executes real trades with actual capital. Use responsibly.
